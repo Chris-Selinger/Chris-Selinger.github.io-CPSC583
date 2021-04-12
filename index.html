@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<style>
+
+    svg {
+        font: 18px sans-serif;
+    }
+
+    tspan:last-child {
+        font-size: 16px;
+    }
+
+</style>
+<svg width="1000" height="900"></svg>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script>
+    //Code done by Chris Selinger 30026679
+    //Inspiration from Mike Bostock's treemaps
+    //https://bl.ocks.org/mbostock/6bbb0a7ff7686b124d80
+
+    var svg = d3.select("svg");
+
+    var width = 1000;
+
+    var height = 900;
+
+    var color = d3.scaleOrdinal(d3.schemeCategory20b);
+
+    var format = d3.format(",d");
+
+    var treemap = d3.treemap()
+        .size([width, height])
+        .paddingTop(10)
+        .paddingInner(3);
+
+    d3.csv("data.csv", function(d) {
+        return d;
+    }, function(error, data) {
+        if (error) throw error;
+
+        var root = d3.stratify()
+            .id(function(a) { return a.path; })
+            .parentId(function(b) { return b.path.substring(0, b.path.lastIndexOf("/")); })
+            (data)
+            .sum(function(c) { return c.size; })
+            .sort(function(size1, size2) { return size2.height - size1.height || size2.value - size1.value; });
+
+        treemap(root);
+
+        var cell = svg.selectAll("a")
+            .data(root.leaves())
+            .enter().append("a")
+            .attr("transform", function(a) {
+                return "translate(" + a.x0 + "," + a.y0 + ")";
+            });
+
+        //Creating treemap rectangles
+        cell.append("rect")
+            .attr("id", function(a) { return a.id; })
+            .attr("width", function(b) { return b.x1 - b.x0; })
+            .attr("height", function(c) { return c.y1 - c.y0; })
+            .attr("fill", function(d) {
+                var rectFill = d.ancestors();
+                return color(rectFill[rectFill.length - 2].id);
+            })
+
+            //Interaction added in which whenever you hover over a square, the boarders a bolded and the color changes
+            .on('mouseover',function(a) {
+                d3.select(this).style("fill", "grey");
+                d3.select(this).style("stroke", "black");
+                d3.select(this).style("stroke-width", "0.5");
+            })
+            .on('mouseout', function(b){
+                d3.select(this).style("fill", function(d) { var a = d.ancestors(); return color(a[a.length - 2].id); })
+                d3.select(this).style("stroke", "white");
+                d3.select(this).style("stroke-width", "0");
+
+            });
+
+        var label = cell.append("text")
+        label.append("tspan")
+            .attr("x", 4)
+            .attr("y", 20)
+            .text(function(a) { return a.data.path;});
+
+        label.append("tspan")
+            .attr("x", 4)
+            .attr("y", 40)
+            .text(function(a) { return format(a.value); });
+
+        // Add title for the treemap. In roughly the middle of the chart and underlined
+        svg.append("text")
+            .attr("x", 300)
+            .attr("y", 14)
+            .text("Alberta Covid Cases After Easing Restrictions")
+            .attr("font-size", "18px")
+            .attr("fill",  "black" )
+            .style("text-decoration", "underline");
+    });
+
+
+
+</script>
