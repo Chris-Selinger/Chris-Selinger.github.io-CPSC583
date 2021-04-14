@@ -106,7 +106,7 @@
         label.append("tspan")
             .attr("x", 4)
             .attr("y", 20)
-            .text(function(a) { return a.data.path;})
+            .text(function(a) { return ("Data Day: " + a.data.path);})
             .attr("font-weight", 700)
             .style("text-decoration", "underline");
 
@@ -114,7 +114,7 @@
         label.append("tspan")
             .attr("x", 4)
             .attr("y", 40)
-            .text(function(a) { return format(a.value); })
+            .text(function(a) { return ("# of Cases: " + format(a.value)); })
             .attr("font-weight", 500);
 
 
