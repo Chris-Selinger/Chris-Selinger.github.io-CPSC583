@@ -13,7 +13,7 @@
 <svg width="1000" height="900"></svg>
 <script src="//d3js.org/d3.v4.min.js"></script>
 <script>
-    //Code done by Chris Selinger 30026679
+    //Code done by Chris Selinger UCID: 30026679
     //Inspiration from Mike Bostock's treemaps
     //https://bl.ocks.org/mbostock/6bbb0a7ff7686b124d80
 
@@ -88,7 +88,7 @@
                     d3.select(this).style("stroke-width", "0");
                 }
             })
-
+            //On click, changes the squares to steelblue if they aren't already selected. If they are selected it deselects them
             .on('click', function (c) {
                 var elemColor = d3.select(this);
                 if (elemColor.style('fill') == "steelblue") {
@@ -101,23 +101,29 @@
                 }
             });
 
-        //Text on the Squares being added via the data
+        //Text on the Squares being added via the data, this block contains specifically the date of the cases
         var label = cell.append("text")
         label.append("tspan")
             .attr("x", 4)
             .attr("y", 20)
-            .text(function(a) { return a.data.path;});
+            .text(function(a) { return a.data.path;})
+            .attr("font-weight", 700)
+            .style("text-decoration", "underline");
 
+        //Adding the covid case values
         label.append("tspan")
             .attr("x", 4)
             .attr("y", 40)
-            .text(function(a) { return format(a.value); });
+            .text(function(a) { return format(a.value); })
+            .attr("font-weight", 500);
 
-        // Add title for the treemap. In roughly the middle of the chart and underlined
+
+        // Add title for the treemap. In roughly the middle of the chart in which it's underlined and bolded
         svg.append("text")
             .attr("x", 300)
             .attr("y", 14)
             .text("Alberta Covid Cases After Easing Restrictions")
+            .attr("font-weight", 900)
             .attr("font-size", "18px")
             .attr("fill",  "black" )
             .style("text-decoration", "underline");
