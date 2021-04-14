@@ -65,9 +65,15 @@
 
             //Interaction added in which whenever you hover over a square, the boarders a bolded and the color changes
             .on('mouseover',function(a) {
-                d3.select(this).style("fill", "grey");
-                d3.select(this).style("stroke", "black");
-                d3.select(this).style("stroke-width", "0.5");
+                var elemColor = d3.select(this);
+                if (elemColor.style('fill') == "steelblue") {
+                    d3.select(this).style("stroke-width", "0.5");
+                }
+                else {
+                    d3.select(this).style("fill", "grey");
+                    d3.select(this).style("stroke", "black");
+                    d3.select(this).style("stroke-width", "0.5");
+                }
             })
 
             //Undoing all of the mouseover functions
@@ -78,10 +84,21 @@
                     d3.select(this).style("stroke", "white");
                     d3.select(this).style("stroke-width", "0");
                 }
+                else{
+                    d3.select(this).style("stroke-width", "0");
+                }
             })
 
             .on('click', function (c) {
-                d3.select(this).style("fill", "steelblue");
+                var elemColor = d3.select(this);
+                if (elemColor.style('fill') == "steelblue") {
+                    d3.select(this).style("fill", "grey");
+                    d3.select(this).style("stroke", "black");
+                    d3.select(this).style("stroke-width", "0.5");
+                }
+                else {
+                    d3.select(this).style("fill", "steelblue");
+                }
             });
 
         //Text on the Squares being added via the data
