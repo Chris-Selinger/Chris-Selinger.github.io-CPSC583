@@ -59,14 +59,14 @@
             .attr("width", function(b) { return b.x1 - b.x0; })
             .attr("height", function(c) { return c.y1 - c.y0; })
             .attr("fill", function(d) {
-                var rectFill = d.ancestors();
-                return color(rectFill[rectFill.length - 2].id);
+                var squareColor = d.ancestors();
+                return color(squareColor[squareColor.length - 2].id);
             })
 
             //Interaction added in which whenever you hover over a square, the boarders a bolded and the color changes
             .on('mouseover',function(a) {
                 var elemColor = d3.select(this);
-                if (elemColor.style('fill') == "steelblue") {
+                if (elemColor.style('fill') == "orange") {
                     d3.select(this).style("stroke-width", "0.5");
                 }
                 else {
@@ -91,13 +91,13 @@
             //On click, changes the squares to steelblue if they aren't already selected. If they are selected it deselects them
             .on('click', function (c) {
                 var elemColor = d3.select(this);
-                if (elemColor.style('fill') == "steelblue") {
+                if (elemColor.style('fill') == "orange") {
                     d3.select(this).style("fill", "grey");
                     d3.select(this).style("stroke", "black");
                     d3.select(this).style("stroke-width", "0.5");
                 }
                 else {
-                    d3.select(this).style("fill", "steelblue");
+                    d3.select(this).style("fill", "orange");
                 }
             });
 
