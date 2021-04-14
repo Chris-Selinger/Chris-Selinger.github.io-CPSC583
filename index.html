@@ -72,10 +72,16 @@
 
             //Undoing all of the mouseover functions
             .on('mouseout', function(b){
-                d3.select(this).style("fill", function(d) { var a = d.ancestors(); return color(a[a.length - 2].id); })
-                d3.select(this).style("stroke", "white");
-                d3.select(this).style("stroke-width", "0");
+                var elemColor = d3.select(this);
+                if (elemColor.style('fill') == "grey") {
+                    d3.select(this).style("fill", function(d) { var a = d.ancestors(); return color(a[a.length - 2].id); })
+                    d3.select(this).style("stroke", "white");
+                    d3.select(this).style("stroke-width", "0");
+                }
+            })
 
+            .on('click', function (c) {
+                d3.select(this).style("fill", "steelblue");
             });
 
         //Text on the Squares being added via the data
